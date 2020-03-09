@@ -10,11 +10,17 @@ class Book < ApplicationRecord
 	validates :title, presence: true
 	validates :body, presence: true, length: {maximum: 200}
 
-def self.search(search)
-    if search
-        Book.where(['title LIKE (?)', "%#{search}%"])
+def self.search(method,word)
+    if method == "forward_match"
+        @books = Book.where("title LIKE?","#{word}%")
+    elsif method == "backward_match"
+        @books = Book.where("title LIKE?","%#{word}")
+    elsif method == "perfect_match"
+    	@books = Book.where(title: "#{word}")
+	elsif method == "partial_match"
+        @books = Book.where("title LIKE?","%#{word}%")
     else
-        Post.all
+        @books = Book.all
     end
 end
 end
