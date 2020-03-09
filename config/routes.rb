@@ -13,5 +13,4 @@ Rails.application.routes.draw do
 
   end
     get 'search' => 'search#search', as: 'search'
-    get 'bookresult' => 'search#bookresult'
  end
