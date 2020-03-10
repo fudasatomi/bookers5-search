@@ -40,8 +40,6 @@ class UsersController < ApplicationController
   end
 #ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
-
-
   private
   def user_params
   	params.require(:user).permit(:name, :introduction, :profile_image)
