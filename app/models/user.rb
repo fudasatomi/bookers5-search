@@ -4,9 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable,:validatable
 
-  has_many :books, dependent: :destroy
+  has_many :Users, dependent: :destroy
   has_many :favorites, dependent: :destroy
-  has_many :book_comments, dependent: :destroy
+  has_many :User_comments, dependent: :destroy
   attachment :profile_image, destroy: false
 
   has_many :follower, foreign_key: "follower_id",
@@ -32,6 +32,20 @@ class User < ApplicationRecord
   def unfollow(user_id)
     follower.find_by(following_id: user_id).destroy
   end
+
+  def self.search(method,word)
+    if method == "forward_match"
+        @users = User.where("name LIKE?","#{word}%")
+    elsif method == "backward_match"
+        @users = User.where("name LIKE?","%#{word}")
+    elsif method == "perfect_match"
+      @users = User.where(name: "#{word}")
+  elsif method == "partial_match"
+        @users = User.where("name LIKE?","%#{word}%")
+    else
+        @users = User.all
+    end
+end
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
   validates :name, length: {maximum: 20, minimum: 2}
   validates :introduction, length:{maximum: 50}
